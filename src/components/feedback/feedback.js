@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { FeedbackOptions } from './feedbackOptions';
 
 const Button = ({ onUpdate, text }) => {
   return (
@@ -15,48 +16,34 @@ export class Feedback extends Component {
     bad: 0,
   };
 
-  updateGood = () => {
-    this.setState(prevState => {
-      return {
-        good: prevState.good + 1,
-      };
-    });
+  onClickFeedback = option => {
+    this.setState(prevState => ({
+      [option]: prevState[option] + 1,
+    }));
   };
 
-  updateNeutral = () => {
-    this.setState(prevState => {
-      return {
-        neutral: prevState.neutral + 1,
-      };
-    });
-  };
-  updateBad = () => {
-    this.setState(prevState => {
-      return {
-        bad: prevState.bad + 1,
-      };
-    });
-  };
   render() {
     const { good, neutral, bad } = this.state;
     const total = good + neutral + bad;
-    const positiveFeedback = Math.round((good / total) * 100);
+    const positiveFeedback = total === 0 ? 0 : Math.round((good / total) * 100);
 
     return (
       <div>
         <h1>Please leave feedback</h1>
-        <Button onUpdate={this.updateGood} text="Good" />
-        <Button onUpdate={this.updateNeutral} text="Neutral" />
-        <Button onUpdate={this.updateBad} text="Bad" />
+        <FeedbackOptions
+          options={Object.keys(this.state)}
+          onClickFeedback={this.onClickFeedback}
+        />
         <h2>Statistics</h2>
-        {total === 0 && <h3>There is no feedback</h3>}
-        {total > 0 && (
+        {total === 0 ? (
+          <h3>There is no feedback</h3>
+        ) : (
           <>
             <p>Good = {good}</p>
             <p>Neutral = {neutral}</p>
             <p>Bad = {bad}</p>
             <p>Total = {total}</p>
-            <p>Positive fedback = {positiveFeedback}%</p>
+            <p>Positive feedback = {positiveFeedback}%</p>
           </>
         )}
       </div>

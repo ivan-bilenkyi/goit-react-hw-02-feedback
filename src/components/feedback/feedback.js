@@ -1,13 +1,5 @@
 import { Component } from 'react';
-import { FeedbackOptions } from './feedbackOptions';
-
-const Button = ({ onUpdate, text }) => {
-  return (
-    <>
-      <button onClick={onUpdate}>{text}</button>
-    </>
-  );
-};
+import { FeedbackOptions } from './FeedbackOptions';
 
 export class Feedback extends Component {
   state = {

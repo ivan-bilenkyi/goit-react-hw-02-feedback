@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { FeedbackOptions } from './FeedbackOptions';
+import { Statistics } from 'components/Statistics/Statistics';
+import { Section } from 'components/Section/Section';
 
 export class Feedback extends Component {
   state = {
@@ -8,7 +10,7 @@ export class Feedback extends Component {
     bad: 0,
   };
 
-  onClickFeedback = option => {
+  onLeaveFeedback = option => {
     this.setState(prevState => ({
       [option]: prevState[option] + 1,
     }));
@@ -21,23 +23,29 @@ export class Feedback extends Component {
 
     return (
       <div>
-        <h1>Please leave feedback</h1>
-        <FeedbackOptions
-          options={Object.keys(this.state)}
-          onClickFeedback={this.onClickFeedback}
+        <Section
+          title="Please leave feedback"
+          children={
+            <FeedbackOptions
+              options={Object.keys(this.state)}
+              onLeaveFeedback={this.onLeaveFeedback}
+            />
+          }
         />
-        <h2>Statistics</h2>
-        {total === 0 ? (
-          <h3>There is no feedback</h3>
-        ) : (
-          <>
-            <p>Good = {good}</p>
-            <p>Neutral = {neutral}</p>
-            <p>Bad = {bad}</p>
-            <p>Total = {total}</p>
-            <p>Positive feedback = {positiveFeedback}%</p>
-          </>
-        )}
+        <Section
+          title="Statistic"
+          children={
+            total !== 0 && (
+              <Statistics
+                good={good}
+                bad={bad}
+                neutral={neutral}
+                total={total}
+                positiveFeedback={positiveFeedback}
+              />
+            )
+          }
+        />
       </div>
     );
   }
